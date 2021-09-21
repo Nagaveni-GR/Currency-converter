@@ -1,0 +1,81 @@
+from tkinter import *
+from tkinter.ttk import Combobox
+from google_currency import convert
+import json
+from tkinter import messagebox
+
+root = Tk()
+root.geometry("600x380")
+
+root.title("Currency Convertor")
+
+root.iconbitmap("dollar.ico")
+root.config(bg="Pink")
+
+with open("ind.txt") as f:
+    lines = f.readlines()
+
+dictop = {}    
+for line in lines:
+    opaq = line.split("\t");
+    dictop[opaq[1]] =  opaq[2]
+
+def functionbutton():
+    try:
+        lightbox = Combobox1.get()
+        heavybox = Combobox2.get()
+        lapto = dictop[lightbox]
+        lapti = dictop[heavybox]
+        serial = var1.get() 
+        opol = convert(lapto, lapti, serial)
+        lope = json.loads(opol)
+        jsonfix = lope["amount"]
+        var2.set(jsonfix)
+    except:
+        rr = messagebox.askretrycancel("A Problem Has Been Occured", "Please Check the Amount You Have Entered.")
+
+
+Lable1 = Label(root, text="Enter the Amount ", bg="Pink", fg="black", font=("ubuntu", 20, "bold"))
+Lable1.place(x=30, y=50)
+
+var1 = IntVar()
+feeder = Entry(root, width=20 ,text=var1, bg="White", fg="blue", font=("ubuntu", 20, "bold"))
+feeder.place(x=290, y=50)
+
+Label2 = Label(root, text="Amount In ", bg="pink", fg="Grey", font=("ubuntu", 15, "bold"))
+Label2.place(x=100, y=100)
+
+slider = StringVar()
+Combobox1 = Combobox(root, width=30, textvariable=slider, state="readonly", font=("ubuntu", 12, "bold"))
+Combobox1['values'] = [item for item in dictop.keys()]
+Combobox1.current(4)
+Combobox1.place(x=300, y=100)
+
+Lable3 = Label(root, text="Amount To ", bg="pink", fg="grey", font=("ubuntu", 15, "bold"))
+Lable3.place(x=100, y=130)
+
+foreground = StringVar()
+Combobox2 = Combobox(root, width=30, textvariable=foreground, state="readonly", font=("ubuntu", 12, "bold"))
+Combobox2['values'] = [item for item in dictop.keys()]
+Combobox2.current(0)
+Combobox2.place(x=300, y=130)
+
+Button1 = Button(root, bg="lightblue", text="Convert", command=functionbutton , fg="white", font=("ubuntu", 15, "bold"), relief=RAISED,\
+                            cursor="hand2")
+Button1.place(x=240, y=180)
+
+Label4 = Label(root, text="Converted Amount ", bg="pink", fg="black", font=("ubuntu", 15, "bold"))
+Label4.place(x=50, y=250)
+
+var2 = IntVar()
+Entry2 = Entry(root, textvariable=var2, fg="blue", state="readonly",width=25, font=("ubuntu", 15, "bold"))
+Entry2.place(x=280, y=250)
+
+#Button2 = Button(root, bg="lightgreen", text="Clear", command=clear_all , fg="grey", font=("ubuntu", 15, "bold"), relief=RAISED,\
+                           # cursor="hand2")
+#Button2.place(x=240, y=300)
+
+footer = Label(root, text="Developed and Designed By Nagaveni G R",bg="pink", fg="grey", font=("ubuntu", 13, "bold"))
+footer.place(x=100, y=320)
+
+root.mainloop()
